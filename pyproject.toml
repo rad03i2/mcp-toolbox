@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "radwan-mcp-toolbox"
+version = "1.0.0"
+description = "A local MCP server exposing safe, deterministic developer utility tools."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Radwan Abdulhadi Ahmed"}]
+dependencies = ["mcp>=1.0,<2"]
+keywords = ["mcp", "model-context-protocol", "developer-tools", "ai"]
+classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License"]
+
+[project.scripts]
+mcp-toolbox = "mcp_toolbox.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_toolbox"]
