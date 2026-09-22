@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "toolbox": {
+      "command": "mcp-toolbox",
+      "args": []
+    }
+  }
+}
