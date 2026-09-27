@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">MCP Toolbox project cover</title>
+<desc id="desc">A technical signal-grid identity showing an MCP hub connecting focused local developer tools.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#090B10"/>
+    <stop offset=".58" stop-color="#11141C"/>
+    <stop offset="1" stop-color="#171329"/>
+  </linearGradient>
+  <linearGradient id="lime" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#D5FF70"/>
+    <stop offset="1" stop-color="#98E52F"/>
+  </linearGradient>
+  <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#A78BFA"/>
+    <stop offset="1" stop-color="#7C3AED"/>
+  </linearGradient>
+  <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#67E8F9"/>
+    <stop offset="1" stop-color="#22D3EE"/>
+  </linearGradient>
+  <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+    <feGaussianBlur stdDeviation="14" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#000" flood-opacity=".42"/>
+  </filter>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0H0V40" fill="none" stroke="#FFFFFF" stroke-opacity=".035" stroke-width="1"/>
+  </pattern>
+</defs>
+
+<rect width="1600" height="900" rx="42" fill="url(#bg)"/>
+<rect width="1600" height="900" rx="42" fill="url(#grid)"/>
+<circle cx="1390" cy="110" r="260" fill="#7C3AED" opacity=".10"/>
+<circle cx="1540" cy="790" r="310" fill="#22D3EE" opacity=".055"/>
+<circle cx="160" cy="820" r="260" fill="#B7FF3C" opacity=".04"/>
+
+<g transform="translate(96 86)">
+  <g filter="url(#shadow)">
+    <path d="M78 0h76l38 66-38 66H78L40 66z" fill="#151923" stroke="#B7FF3C" stroke-opacity=".62" stroke-width="3"/>
+    <circle cx="116" cy="66" r="29" fill="#0D1016" stroke="#B7FF3C" stroke-width="4"/>
+    <circle cx="116" cy="66" r="9" fill="#B7FF3C" filter="url(#glow)"/>
+    <circle cx="65" cy="38" r="7" fill="#4DE3FF"/>
+    <circle cx="168" cy="38" r="7" fill="#9B7BFF"/>
+    <circle cx="65" cy="94" r="7" fill="#9B7BFF"/>
+    <circle cx="168" cy="94" r="7" fill="#4DE3FF"/>
+    <path d="M72 42l28 15M160 42l-28 15M72 90l28-14M160 90l-28-14" stroke="#65707E" stroke-width="3"/>
+  </g>
+</g>
+
+<text x="320" y="150" fill="#F5F7FA" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="78" font-weight="800" letter-spacing="-2">MCP Toolbox</text>
+<text x="323" y="204" fill="#B7FF3C" font-family="JetBrains Mono,Consolas,monospace" font-size="25" font-weight="700" letter-spacing="5">LOCAL TOOL BUS FOR MCP CLIENTS</text>
+
+<text x="100" y="318" fill="#F0F2F5" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="42" font-weight="650">Small tools. Narrow permissions. Predictable behavior.</text>
+<text x="100" y="370" fill="#99A1AD" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="24">Seven focused developer utilities over FastMCP + stdio — without shell, files, network, telemetry, or credentials.</text>
+
+<g transform="translate(115 475)">
+  <g>
+    <path d="M575 92H250" stroke="#B7FF3C" stroke-opacity=".42" stroke-width="3" stroke-dasharray="8 12"/>
+    <path d="M745 92h325" stroke="#4DE3FF" stroke-opacity=".38" stroke-width="3" stroke-dasharray="8 12"/>
+    <path d="M660 18V-35" stroke="#A78BFA" stroke-opacity=".48" stroke-width="3" stroke-dasharray="8 12"/>
+    <path d="M660 166v58" stroke="#A78BFA" stroke-opacity=".48" stroke-width="3" stroke-dasharray="8 12"/>
+  </g>
+
+  <g transform="translate(545 0)" filter="url(#shadow)">
+    <path d="M80 0h70l35 61-35 61H80L45 61z" fill="#141922" stroke="#B7FF3C" stroke-width="3"/>
+    <circle cx="115" cy="61" r="23" fill="#0A0C11" stroke="#B7FF3C" stroke-width="3"/>
+    <circle cx="115" cy="61" r="7" fill="#B7FF3C" filter="url(#glow)"/>
+    <text x="115" y="151" text-anchor="middle" fill="#E8EDF2" font-family="JetBrains Mono,Consolas,monospace" font-size="17" font-weight="700">FastMCP HUB</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="0" y="30" width="250" height="124" rx="24" fill="#151923" stroke="#343A46"/>
+    <rect x="18" y="48" width="49" height="49" rx="12" fill="url(#lime)"/>
+    <path d="M32 72h21M42 62v21" stroke="#101318" stroke-width="5" stroke-linecap="round"/>
+    <text x="84" y="75" fill="#F3F5F7" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700">TEXT TOOLS</text>
+    <text x="84" y="102" fill="#89929E" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">hash · stats · Base64</text>
+    <text x="18" y="136" fill="#B7FF3C" font-family="JetBrains Mono,Consolas,monospace" font-size="14">local / bounded input</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1070" y="30" width="250" height="124" rx="24" fill="#151923" stroke="#343A46"/>
+    <rect x="1088" y="48" width="49" height="49" rx="12" fill="url(#cyan)"/>
+    <path d="M1100 62l12 10-12 10M1125 62l-12 10 12 10" fill="none" stroke="#0C1117" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="1154" y="75" fill="#F3F5F7" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700">JSON TOOL</text>
+    <text x="1154" y="102" fill="#89929E" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">validate + format</text>
+    <text x="1088" y="136" fill="#4DE3FF" font-family="JetBrains Mono,Consolas,monospace" font-size="14">Unicode preserved</text>
+  </g>
+
+  <g transform="translate(535 -155)" filter="url(#shadow)">
+    <rect width="250" height="120" rx="24" fill="#151923" stroke="#343A46"/>
+    <rect x="18" y="18" width="49" height="49" rx="12" fill="url(#violet)"/>
+    <path d="M29 43h26M42 30v26" stroke="#0F1118" stroke-width="5" stroke-linecap="round"/>
+    <text x="84" y="48" fill="#F3F5F7" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700">IDENTITY</text>
+    <text x="84" y="76" fill="#89929E" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">UUID v4</text>
+    <text x="18" y="102" fill="#A78BFA" font-family="JetBrains Mono,Consolas,monospace" font-size="14">focused generator</text>
+  </g>
+
+  <g transform="translate(535 224)" filter="url(#shadow)">
+    <rect width="250" height="120" rx="24" fill="#151923" stroke="#343A46"/>
+    <rect x="18" y="18" width="49" height="49" rx="12" fill="#202630" stroke="#B7FF3C" stroke-opacity=".6"/>
+    <circle cx="42" cy="42" r="12" fill="none" stroke="#B7FF3C" stroke-width="3"/>
+    <path d="M42 35v8l7 4" fill="none" stroke="#B7FF3C" stroke-width="3" stroke-linecap="round"/>
+    <text x="84" y="48" fill="#F3F5F7" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700">TIME</text>
+    <text x="84" y="76" fill="#89929E" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">UTC + Unix seconds</text>
+    <text x="18" y="102" fill="#B7FF3C" font-family="JetBrains Mono,Consolas,monospace" font-size="14">structured result</text>
+  </g>
+</g>
+
+<g transform="translate(100 815)">
+  <rect width="1400" height="1" fill="#343945"/>
+  <text x="0" y="45" fill="#D9DEE5" font-family="Noto Sans Arabic,Arial,sans-serif" font-size="22" font-weight="700">رضوان عبدالهادي</text>
+  <text x="206" y="45" fill="#737D89" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16">• A Radwan Abd alhady Project</text>
+  <text x="1400" y="45" text-anchor="end" fill="#737D89" font-family="JetBrains Mono,Consolas,monospace" font-size="15">MCP-TOOLBOX / v1.0.0</text>
+</g>
+</svg>

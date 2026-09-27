@@ -1,48 +1,124 @@
-# MCP Toolbox
+<p align="center">
+  <img src="assets/project-cover.svg" alt="MCP Toolbox — local developer utilities over Model Context Protocol" width="100%" />
+</p>
 
-A small, local **Model Context Protocol (MCP)** server that gives MCP-compatible AI clients a focused set of safe developer utilities. It uses the official Python MCP SDK/FastMCP layer and keeps tool logic separate and directly testable.
+<p align="center">
+  <img src="assets/project-logo.svg" alt="MCP Toolbox logo" width="112" />
+</p>
 
-**Author:** Radwan Abdulhadi Ahmed · رضوان عبدالهادي أحمد · [@rad03i2](https://github.com/rad03i2)
+<h1 align="center">MCP Toolbox</h1>
 
-## Why it exists
+<p align="center">
+  A compact local Model Context Protocol server that exposes focused developer utilities without filesystem access, shell execution, network calls, telemetry, or credentials.
+</p>
 
-AI clients often need tiny deterministic operations—format JSON, calculate a checksum, encode text, count text, create a UUID—without sending data to another web service or granting filesystem/shell access. MCP Toolbox provides those operations over a local MCP server.
+<p align="center">
+  <a href="https://github.com/rad03i2/mcp-toolbox/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/rad03i2/mcp-toolbox/actions/workflows/ci.yml/badge.svg" /></a>
+  <img alt="Python 3.10+" src="https://img.shields.io/badge/Python-3.10%2B-4DE3FF?style=flat-square&logo=python&logoColor=111318" />
+  <img alt="MCP" src="https://img.shields.io/badge/Protocol-MCP-B7FF3C?style=flat-square" />
+  <img alt="MIT" src="https://img.shields.io/badge/License-MIT-8B5CF6?style=flat-square" />
+  <img alt="Transport stdio" src="https://img.shields.io/badge/Transport-stdio-232733?style=flat-square" />
+</p>
 
-## Features
+<p align="center">
+  <a href="#overview">Overview</a> ·
+  <a href="#tool-catalog">Tools</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#architecture">Architecture</a> ·
+  <a href="#security-model">Security</a> ·
+  <a href="#العربية">العربية</a>
+</p>
 
-- `hash_text` — SHA-256/SHA-512 plus SHA-1/MD5 for legacy checksum compatibility.
-- `format_json` — validate and pretty-print JSON with Unicode preserved.
-- `base64_encode` / `base64_decode` — strict UTF-8 Base64 conversion.
-- `text_stats` — characters, non-whitespace characters, words, lines, and UTF-8 bytes.
-- `new_uuid` — UUID v4 generation.
-- `utc_now` — ISO-8601 UTC and Unix timestamp.
-- 1,000,000-character input guard for text-processing tools.
-- No filesystem access, shell execution, network calls, telemetry, database, or credentials.
-- Pure-Python core API plus MCP interface.
+---
 
-## Preview
+## Overview
 
-After configuration, your MCP client can discover tools such as `format_json` and invoke them with structured arguments. This project is a stdio server, so it intentionally has no graphical interface. For a repository screenshot, capture your MCP client's tool-discovery panel showing the locally connected `toolbox` server; never include tokens or private prompts.
+**MCP Toolbox** is a small Python server for MCP-compatible AI clients. It provides a set of deterministic or tightly scoped developer utilities through the official Python MCP SDK / FastMCP layer while keeping the actual tool logic in a separately testable core module.
 
-## Requirements
+The project exists for operations that are too small to justify a remote service or broad machine access: formatting JSON, hashing text, Base64 conversion, counting text, generating a UUID, or reading the current UTC time.
 
-- Python 3.10+
+### Design goals
+
+- **Local-first** — the current tools do not call external services.
+- **Narrow permissions** — no filesystem reads/writes, shell commands, database access, or arbitrary network requests.
+- **Small surface area** — seven focused tools rather than a general-purpose execution environment.
+- **Directly testable core** — utility behavior is separated from MCP transport wiring.
+- **Explicit limits** — text-processing inputs are capped at 1,000,000 characters.
+
+## Tool catalog
+
+| MCP tool | What it does | Notes |
+| --- | --- | --- |
+| `hash_text` | Hash UTF-8 text | SHA-256 / SHA-512; SHA-1 / MD5 only for legacy checksum compatibility |
+| `format_json` | Validate and pretty-print JSON | Preserves Unicode; indentation range 0–8 |
+| `base64_encode` | Encode UTF-8 text as Base64 | Text only |
+| `base64_decode` | Strictly decode Base64 to UTF-8 | Rejects malformed Base64 and non-UTF-8 bytes |
+| `text_stats` | Count characters, words, lines and UTF-8 bytes | Includes non-whitespace character count |
+| `new_uuid` | Generate UUID v4 | Random by design |
+| `utc_now` | Return current UTC time | ISO-8601 plus Unix seconds |
+
+> Base64 is an encoding, not encryption. For integrity-sensitive hashing, prefer SHA-256 or SHA-512.
+
+## How it fits together
+
+```mermaid
+flowchart LR
+    A[MCP-compatible client] -->|stdio| B[FastMCP server]
+    B --> C{Tool dispatch}
+    C --> D[hash_text]
+    C --> E[format_json]
+    C --> F[Base64]
+    C --> G[text_stats]
+    C --> H[UUID v4]
+    C --> I[UTC time]
+    D --> J[Pure Python core]
+    E --> J
+    F --> J
+    G --> J
+    H --> J
+    I --> J
+    J --> K[Structured result]
+    K --> B
+    B -->|MCP response| A
+```
+
+The MCP layer in `server.py` is intentionally thin. Validation and utility behavior live in `core.py`, which makes the core reusable without running an MCP server.
+
+## Quick start
+
+### Requirements
+
+- Python **3.10+**
 - An MCP-compatible client
+- The Python `mcp` package is installed through the project dependency
 
-## Installation
+### Install
 
 ```bash
 git clone https://github.com/rad03i2/mcp-toolbox.git
 cd mcp-toolbox
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# Linux/macOS: source .venv/bin/activate
+```
+
+Activate the environment:
+
+```bash
+# Windows
+.venv\Scripts\activate
+
+# Linux / macOS
+source .venv/bin/activate
+```
+
+Then install:
+
+```bash
 python -m pip install -e .
 ```
 
-## Client configuration
+## MCP client configuration
 
-A generic stdio configuration is included at `examples/client-config.json`:
+A generic stdio example is included in [`examples/client-config.json`](examples/client-config.json):
 
 ```json
 {
@@ -55,69 +131,136 @@ A generic stdio configuration is included at `examples/client-config.json`:
 }
 ```
 
-The exact configuration file/location depends on your MCP client. If the executable is not visible to the client, use the absolute path to the virtual environment's `mcp-toolbox` executable.
+The exact configuration location depends on the client. If the client cannot resolve `mcp-toolbox`, use the absolute path to the executable inside the virtual environment.
 
-## Usage examples
+## Example requests
 
-Once connected, ask your MCP client to use a tool, for example:
+Once connected, an MCP client can request operations such as:
 
-- “Use `format_json` on this JSON with indent 2.”
-- “Use `hash_text` to calculate SHA-256 for this text.”
-- “Use `text_stats` on this paragraph.”
+```text
+Use format_json on this JSON with indent 2.
+Use hash_text to calculate SHA-256 for this text.
+Use text_stats on this paragraph.
+Generate a UUID v4 with new_uuid.
+Return the current UTC time with utc_now.
+```
 
-The pure core is also reusable directly:
+### Direct Python API
+
+The same core functions are reusable without MCP:
 
 ```python
-from mcp_toolbox import hash_text, format_json
+from mcp_toolbox import format_json, hash_text, text_stats
 
 print(hash_text("hello"))
 print(format_json('{"city":"الموصل","ok":true}'))
+print(text_stats("Hello مرحبا"))
 ```
 
-## Configuration
-
-No environment variables, API keys, or `.env` file are required. The server uses the MCP SDK's default local stdio transport via `mcp.run()`.
-
-## Project structure
+## Architecture
 
 ```text
-src/mcp_toolbox/
-  __init__.py     public core API and package metadata
-  core.py         validated deterministic utilities
-  server.py       FastMCP tool declarations and entry point
-tests/test_core.py
-examples/client-config.json
-.github/workflows/ci.yml
+mcp-toolbox/
+├─ src/mcp_toolbox/
+│  ├─ __init__.py        # public core API + package metadata
+│  ├─ core.py            # validation and utility implementations
+│  └─ server.py          # FastMCP declarations + stdio entry point
+├─ tests/
+│  └─ test_core.py       # unittest coverage for the core behavior
+├─ examples/
+│  └─ client-config.json # generic MCP client configuration
+├─ assets/               # repository visual identity
+├─ docs/
+│  ├─ ARCHITECTURE.md    # design and trust-boundary notes
+│  └─ BRAND.md           # visual identity guide
+└─ .github/workflows/
+   └─ ci.yml             # cross-platform validation
 ```
 
-## Testing
+For a deeper explanation, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Security model
+
+The current implementation intentionally does **not** expose:
+
+- filesystem access;
+- shell or process execution;
+- network access;
+- database access;
+- secrets or credential storage;
+- telemetry;
+- arbitrary code evaluation.
+
+Additional safeguards and constraints:
+
+- Text-processing inputs are limited to **1,000,000 characters**.
+- JSON parsing uses Python's JSON parser and does not evaluate code.
+- Base64 decoding is strict and must decode to valid UTF-8.
+- MD5 and SHA-1 are present only for compatibility/checksum workflows, not password storage or security-sensitive signatures.
+- The server uses the MCP SDK's default local stdio transport through `mcp.run()`.
+
+See [SECURITY.md](SECURITY.md) for reporting guidance and security notes.
+
+## Testing & CI
+
+Run the current checks locally:
 
 ```bash
 python -m compileall -q src tests
 python -m unittest discover -s tests -v
 ```
 
-CI runs compilation, unit tests, and an MCP server import smoke check on Python 3.10, 3.12, and 3.13 across Ubuntu, Windows, and macOS.
+The test suite currently covers:
 
-## Security & privacy
+- known SHA-256 output;
+- rejection of unsupported hash algorithms;
+- Unicode-preserving JSON formatting and sorting;
+- JSON error locations;
+- Unicode Base64 round trips;
+- invalid / non-UTF-8 Base64 rejection;
+- text statistics;
+- the 1,000,000-character input limit;
+- UUID v4 generation;
+- UTC result shape.
 
-Processing is local. Tools do not read files, run shell commands, or make network requests. Base64 is not encryption. MD5/SHA-1 are retained only for legacy checksum interoperability; use SHA-256/SHA-512 for integrity work. See [SECURITY.md](SECURITY.md).
+The GitHub Actions workflow is configured for **Ubuntu, Windows, and macOS** with Python **3.10, 3.12, and 3.13**, and performs compilation, unit tests, and an MCP server import smoke check.
+
+## Configuration
+
+There are currently no required environment variables, API keys, credentials, databases, or `.env` files.
+
+The executable entry point is:
+
+```text
+mcp-toolbox -> mcp_toolbox.server:main
+```
 
 ## Limitations
 
-- Text utilities intentionally reject inputs above 1,000,000 characters.
-- Base64 decoding only accepts payloads that decode to valid UTF-8 text; this is not a binary-file tool.
-- `format_json` parses the whole document in memory.
-- UUID generation and current time are intentionally non-deterministic tools.
-- Client setup differs between MCP hosts; the included config is a generic stdio example.
+- The server currently uses local stdio transport only.
+- Base64 helpers operate on UTF-8 text, not arbitrary binary files.
+- JSON input is loaded fully into memory.
+- Text-processing input is capped at one million characters.
+- UUID generation and current time are intentionally non-deterministic.
+- MCP client configuration differs between clients.
+- This is a focused utility server, not a shell, filesystem manager, browser, or remote automation agent.
 
-## Optional roadmap
+## Roadmap ideas
 
-Possible future additions include safe URL parsing, JSON Pointer helpers, and opt-in resource templates. Arbitrary shell execution and silent filesystem mutation are intentionally outside the project's scope.
+The following are **ideas, not current features**:
+
+- safe URL parsing helpers;
+- JSON Pointer utilities;
+- optional resource templates;
+- additional deterministic text utilities.
+
+Arbitrary shell execution and silent filesystem mutation are intentionally outside the project's current scope.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Keep additions focused, testable, local-first, and explicit about side effects.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Changes should preserve the project's narrow permissions and include tests for behavior changes.
+
+Repository-facing artwork should follow [docs/BRAND.md](docs/BRAND.md).
 
 ## License
 
@@ -125,39 +268,36 @@ MIT — see [LICENSE](LICENSE).
 
 ## Author
 
-**Radwan Abdulhadi Ahmed**  
-**رضوان عبدالهادي أحمد**  
-GitHub: **[@rad03i2](https://github.com/rad03i2)**
+**رضوان عبدالهادي**  
+**Radwan Abd alhady Ahmed** · [@rad03i2](https://github.com/rad03i2)
 
 ---
 
-# MCP Toolbox — العربية
+<a id="العربية"></a>
+<div dir="rtl">
 
-خادم محلي صغير مبني على **Model Context Protocol (MCP)** يوفّر لعملاء الذكاء الاصطناعي المتوافقين مع MCP مجموعة مركزة من أدوات المطور الآمنة. يستخدم طبقة FastMCP من حزمة MCP الرسمية لبايثون، مع فصل منطق الأدوات عن الخادم لتسهيل الاختبار وإعادة الاستخدام.
+<h2>العربية</h2>
 
-## لماذا يوجد المشروع؟
+<p><strong>MCP Toolbox</strong> خادم محلي صغير لبروتوكول Model Context Protocol مكتوب بلغة Python. يتيح لعملاء MCP مجموعة أدوات مطور محددة وآمنة دون منحها وصولًا عامًا إلى الملفات أو Shell أو الشبكة.</p>
 
-تحتاج تطبيقات الذكاء الاصطناعي كثيرًا إلى عمليات صغيرة وحتمية مثل تنسيق JSON أو حساب بصمة نص أو Base64 أو إحصاءات النص أو إنشاء UUID، دون إرسال البيانات إلى خدمة ويب خارجية أو منح العميل صلاحية الملفات أو سطر الأوامر. يوفر هذا المشروع هذه الوظائف محليًا عبر MCP.
+<h3>الأدوات الموجودة فعليًا</h3>
 
-## الميزات
+<ul>
+  <li><code>hash_text</code> — حساب SHA-256 وSHA-512، مع SHA-1 وMD5 للتوافق مع البصمات القديمة فقط.</li>
+  <li><code>format_json</code> — التحقق من JSON وتنسيقه مع الحفاظ على Unicode.</li>
+  <li><code>base64_encode</code> و<code>base64_decode</code> — تحويل نص UTF-8 من وإلى Base64 بشكل صارم.</li>
+  <li><code>text_stats</code> — إحصاءات المحارف والكلمات والأسطر وحجم UTF-8.</li>
+  <li><code>new_uuid</code> — إنشاء UUID v4.</li>
+  <li><code>utc_now</code> — إرجاع الوقت الحالي بصيغة UTC وUnix timestamp.</li>
+</ul>
 
-- `hash_text`: حساب SHA-256 وSHA-512، مع SHA-1 وMD5 للتوافق مع البصمات القديمة.
-- `format_json`: التحقق من JSON وتنسيقه مع الحفاظ على Unicode.
-- `base64_encode` و`base64_decode`: تحويل Base64 صارم لنصوص UTF-8.
-- `text_stats`: عدد المحارف والكلمات والأسطر والبايتات.
-- `new_uuid`: إنشاء UUID v4.
-- `utc_now`: الوقت العالمي UTC بصيغة ISO-8601 وUnix.
-- حد مليون محرف لمدخلات أدوات النص لتقليل الاستهلاك العرضي للذاكرة.
-- لا وصول للملفات، ولا تنفيذ Shell، ولا شبكة أو تتبع أو قاعدة بيانات أو أسرار.
-- واجهة Python مباشرة إلى جانب واجهة MCP.
+<h3>فلسفة المشروع</h3>
 
-## المعاينة
+<p>المشروع متعمد أن يكون صغيرًا ومحدود الصلاحيات. الكود الحالي لا يقرأ ملفات المستخدم ولا يشغل أوامر النظام ولا يفتح اتصالات شبكة ولا يخزن مفاتيح أو بيانات دخول ولا يرسل Telemetry. أدوات معالجة النص محدودة بمليون محرف.</p>
 
-بعد ربط الخادم يستطيع عميل MCP اكتشاف الأدوات واستدعاءها بمعاملات منظمة. المشروع خادم stdio ولا يملك واجهة رسومية عمدًا. إذا أردت صورة للمستودع، التقط لوحة الأدوات في عميل MCP وهي تعرض خادم `toolbox` المحلي، مع التأكد من عدم ظهور رموز وصول أو محادثات خاصة.
+<h3>التثبيت</h3>
 
-## المتطلبات والتثبيت
-
-يتطلب Python 3.10 أو أحدث وعميلًا متوافقًا مع MCP.
+</div>
 
 ```bash
 git clone https://github.com/rad03i2/mcp-toolbox.git
@@ -166,51 +306,46 @@ python -m venv .venv
 python -m pip install -e .
 ```
 
-في Windows فعّل البيئة عبر `.venv\Scripts\activate`، وفي Linux/macOS استخدم `source .venv/bin/activate`.
+<div dir="rtl">
 
-## الاستخدام والإعداد
+<p>يوجد مثال إعداد جاهز في <code>examples/client-config.json</code>. يشغَّل الخادم عادةً عبر الأمر <code>mcp-toolbox</code> من إعداد stdio داخل عميل MCP.</p>
 
-يوجد مثال جاهز في `examples/client-config.json`. شغّل الخادم بالأمر `mcp-toolbox` من إعداد stdio الخاص بعميلك. موقع ملف إعداد MCP يختلف حسب العميل؛ وإذا لم يجد العميل الأمر فاستخدم المسار المطلق للملف التنفيذي داخل البيئة الافتراضية. لا يحتاج المشروع إلى متغيرات بيئة أو مفاتيح API أو ملف `.env`.
+<h3>الاستخدام المباشر من Python</h3>
 
-يمكن كذلك استخدام المحرك مباشرة:
+</div>
 
 ```python
 from mcp_toolbox import hash_text, text_stats
+
 print(hash_text("مرحبا"))
 print(text_stats("أهلاً من الموصل"))
 ```
 
-## بنية المشروع
+<div dir="rtl">
 
-`src/mcp_toolbox/core.py` يحوي الأدوات والتحقق، و`server.py` يعرّف أدوات FastMCP، و`tests/` للاختبارات، و`examples/` لإعداد العميل، و`.github/workflows/ci.yml` للتحقق الآلي.
+<h3>الاختبارات</h3>
 
-## الاختبارات
+</div>
 
 ```bash
 python -m compileall -q src tests
 python -m unittest discover -s tests -v
 ```
 
-يشغّل CI الاختبارات وفحص الاستيراد على Python 3.10 و3.12 و3.13 في Ubuntu وWindows وmacOS.
+<div dir="rtl">
 
-## الأمان والخصوصية
+<p>تم إعداد CI لتشغيل التحقق على Ubuntu وWindows وmacOS باستخدام Python 3.10 و3.12 و3.13.</p>
 
-المعالجة محلية، ولا تقرأ الأدوات ملفات المستخدم ولا تنفذ أوامر النظام ولا تتصل بالشبكة. Base64 ترميز وليس تشفيرًا. MD5 وSHA-1 موجودان فقط للتوافق مع بصمات قديمة؛ استخدم SHA-256 أو SHA-512 لأعمال سلامة البيانات. راجع [SECURITY.md](SECURITY.md).
+<h3>ملاحظات الأمان</h3>
 
-## القيود
+<ul>
+  <li>Base64 ترميز وليس تشفيرًا.</li>
+  <li>يفضل SHA-256 أو SHA-512 لأعمال سلامة البيانات.</li>
+  <li>MD5 وSHA-1 موجودان فقط للتوافق مع حالات checksum القديمة.</li>
+  <li>لا توجد أدوات Shell أو ملفات أو شبكة في التنفيذ الحالي.</li>
+</ul>
 
-مدخلات النص محدودة بمليون محرف، وBase64 مخصص لنص UTF-8 وليس للملفات الثنائية، وJSON يُحمّل كاملًا في الذاكرة، وإنشاء UUID والوقت الحالي غير حتميين بطبيعتهما، كما تختلف طريقة إعداد MCP من عميل إلى آخر.
+<h3>المطور</h3>
+<p><strong>رضوان عبدالهادي</strong><br/>Radwan Abd alhady Ahmed — <a href="https://github.com/rad03i2">@rad03i2</a></p>
 
-## التطوير الاختياري
-
-يمكن مستقبلًا إضافة تحليل آمن لعناوين URL ومساعدات JSON Pointer وقوالب موارد اختيارية. تنفيذ Shell العشوائي أو تعديل الملفات بصمت خارج نطاق المشروع عمدًا.
-
-## المساهمة والترخيص
-
-راجع [CONTRIBUTING.md](CONTRIBUTING.md) للمساهمة. المشروع مرخص وفق MIT؛ راجع [LICENSE](LICENSE).
-
-## المؤلف
-
-**Radwan Abdulhadi Ahmed**  
-**رضوان عبدالهادي أحمد**  
-GitHub: **[@rad03i2](https://github.com/rad03i2)**
+</div>

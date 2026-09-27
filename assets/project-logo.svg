@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<title id="title">MCP Toolbox logo</title>
+<desc id="desc">A central MCP tool hub connected to four colored utility nodes.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#090B10"/>
+    <stop offset="1" stop-color="#19132D"/>
+  </linearGradient>
+  <linearGradient id="hub" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#D6FF74"/>
+    <stop offset="1" stop-color="#9BE832"/>
+  </linearGradient>
+  <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="24" stdDeviation="25" flood-color="#000" flood-opacity=".45"/>
+  </filter>
+  <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+    <feGaussianBlur stdDeviation="11" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+
+<rect width="512" height="512" rx="116" fill="url(#bg)"/>
+<circle cx="410" cy="95" r="120" fill="#7C3AED" opacity=".10"/>
+<circle cx="88" cy="418" r="120" fill="#22D3EE" opacity=".055"/>
+
+<g filter="url(#shadow)">
+  <path d="M256 154L356 212V328L256 386 156 328V212z" fill="#151923" stroke="#B7FF3C" stroke-width="5"/>
+  <circle cx="256" cy="270" r="68" fill="#0B0D12" stroke="#B7FF3C" stroke-width="5"/>
+  <circle cx="256" cy="270" r="18" fill="url(#hub)" filter="url(#glow)"/>
+  <circle cx="256" cy="270" r="40" fill="none" stroke="#B7FF3C" stroke-opacity=".25" stroke-width="3" stroke-dasharray="5 9"/>
+
+  <path d="M219 235L148 164M293 235l71-71M219 305l-71 71M293 305l71 71" stroke="#56606C" stroke-width="8" stroke-linecap="round"/>
+
+  <rect x="91" y="107" width="92" height="92" rx="25" fill="#B7FF3C"/>
+  <path d="M116 153h42M137 132v42" stroke="#111318" stroke-width="9" stroke-linecap="round"/>
+
+  <rect x="329" y="107" width="92" height="92" rx="25" fill="#8B5CF6"/>
+  <path d="M352 139l23 14-23 14M398 139l-23 14 23 14" fill="none" stroke="#0F1118" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="91" y="341" width="92" height="92" rx="25" fill="#4DE3FF"/>
+  <path d="M115 384h44M115 402h32" stroke="#0D1217" stroke-width="8" stroke-linecap="round"/>
+
+  <rect x="329" y="341" width="92" height="92" rx="25" fill="#222733" stroke="#B7FF3C" stroke-opacity=".65" stroke-width="3"/>
+  <circle cx="375" cy="387" r="24" fill="none" stroke="#B7FF3C" stroke-width="6"/>
+  <path d="M375 373v16l12 7" fill="none" stroke="#B7FF3C" stroke-width="6" stroke-linecap="round"/>
+</g>
+</svg>
